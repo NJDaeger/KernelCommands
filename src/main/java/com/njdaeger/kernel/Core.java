@@ -1,12 +1,13 @@
 package com.njdaeger.kernel;
 
 import com.coalesce.plugin.CoPlugin;
+import org.bukkit.Bukkit;
 
-public class Kernel extends CoPlugin {
+public class Core extends CoPlugin {
 	
 	@Override
 	public void onPluginEnable() throws Exception {
-	
+
 	}
 	
 	@Override
