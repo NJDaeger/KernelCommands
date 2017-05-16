@@ -1,5 +1,4 @@
 package com.njdaeger.kernel.commands;
 
-public
-class CommandManager {
+public class CommandManager {
 }
