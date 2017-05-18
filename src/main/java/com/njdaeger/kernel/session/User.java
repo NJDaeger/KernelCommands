@@ -11,10 +11,21 @@ import org.bukkit.permissions.Permission;
  */
 public interface User extends OfflineUser {
 	
+	/**
+	 * Called when a player logs in.
+	 */
 	void login();
 	
+	/**
+	 * Called when a player logs out.
+	 */
 	void logout();
 	
+	/**
+	 * Checks if a user has a specific permission.
+	 * @param permission The permission to check
+	 * @return True if the user has permission, false otherwise.
+	 */
 	boolean hasPermission(Permission... permission);
 	
 	boolean hasPermission(String... permission);
