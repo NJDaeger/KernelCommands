@@ -28,8 +28,17 @@ public interface User extends OfflineUser {
 	 */
 	boolean hasPermission(Permission... permission);
 	
+	/**
+	 * Checks if a user has a specific permission.
+	 * @param permission The permission to check
+	 * @return True if the user has permission, false otherwise.
+	 */
 	boolean hasPermission(String... permission);
 	
+	/**
+	 * Teleports a player to a new location.
+	 * @param location The location to go to.
+	 */
 	void teleport(Location location);
 	
 	void sudo(String command);
