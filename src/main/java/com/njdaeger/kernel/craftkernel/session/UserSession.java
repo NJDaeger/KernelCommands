@@ -28,10 +28,10 @@ public final class UserSession extends YamlConfig implements User {
 		this.keymap = new HashMap<>();
 		this.player = player;
 		
-		addEntry("uuid", player.getUniqueId().toString());
-		addEntry("name", player.getName());
-		addEntry("nickname", player.getDisplayName());
-		addEntry("address",player.getAddress().getAddress().getHostAddress());
+		addReplace("uuid", player.getUniqueId().toString());
+		addReplace("name", player.getName());
+		addReplace("nickname", player.getDisplayName());
+		addReplace("address",player.getAddress().getAddress().getHostAddress());
 		addEntry("muted", false);
 		addEntry("spying", false);
 		addEntry("god", false);
@@ -40,15 +40,15 @@ public final class UserSession extends YamlConfig implements User {
 		addEntry("teleportable", true);
 		addEntry("flyspeed", 1);
 		addEntry("walkspeed", 1);
-		addEntry("operator", player.isOp());
-		addEntry("gamemode", player.getGameMode().name());
+		addReplace("operator", player.isOp());
+		addReplace("gamemode", player.getGameMode().name());
 		addEntry("hidden", false);
-		addEntry("location.loginx", player.getLocation().getBlockX());
-		addEntry("location.loginy", player.getLocation().getBlockY());
-		addEntry("location.loginz", player.getLocation().getBlockZ());
-		addEntry("location.loginyaw", player.getLocation().getYaw());
-		addEntry("location.loginpitch", player.getLocation().getPitch());
-		addEntry("location.loginworld", player.getWorld().getName());
+		addReplace("location.loginx", player.getLocation().getBlockX());
+		addReplace("location.loginy", player.getLocation().getBlockY());
+		addReplace("location.loginz", player.getLocation().getBlockZ());
+		addReplace("location.loginyaw", player.getLocation().getYaw());
+		addReplace("location.loginpitch", player.getLocation().getPitch());
+		addReplace("location.loginworld", player.getWorld().getName());
 		addEntry("location.lastx", player.getLocation().getBlockX());
 		addEntry("location.lasty", player.getLocation().getBlockY());
 		addEntry("location.lastz", player.getLocation().getBlockZ());
@@ -181,8 +181,7 @@ public final class UserSession extends YamlConfig implements User {
 	}
 	
 	@Override
-	public
-	Gamemode getGamemode() {
+	public Gamemode getGamemode() {
 		return null;
 	}
 	

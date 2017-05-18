@@ -12,10 +12,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <versionSpigot>1.11.2-R0.1-SNAPSHOT</versionSpigot>
         <versionAnnotations>15.0</versionAnnotations>
-
         <versionMavenClean>3.0.0</versionMavenClean>
         <versionMavenShade>3.0.0</versionMavenShade>
         <versionMavenSources>3.0.1</versionMavenSources>
@@ -23,8 +21,26 @@
     </properties>
 
     <build>
+        <!--Resource Generation-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
-            <!--Attach Sources and JavaDocs-->
+
+            <!--Jar Generation-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <outputDirectory>jars/</outputDirectory>
+                </configuration>
+            </plugin>
+
+            <!--Source Generation-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -37,7 +53,12 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <outputDirectory>jars/</outputDirectory>
+                </configuration>
             </plugin>
+
+            <!--Javadoc Generation-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -51,6 +72,8 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <outputDirectory>docs/</outputDirectory>
+                    <jarOutputDirectory>jars/</jarOutputDirectory>
                     <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
             </plugin>
@@ -68,6 +91,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <outputDirectory>jars/</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>

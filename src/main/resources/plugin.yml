@@ -1,0 +1,6 @@
+name: ${project.artifactId}
+version: ${project.version}
+main: com.njdaeger.kernel.craftkernel.Core
+author: NJDaeger
+description: Core functions needed on a server.
+depend: [CoalesceCore]
