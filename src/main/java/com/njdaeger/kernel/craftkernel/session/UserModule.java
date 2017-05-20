@@ -32,18 +32,15 @@ public final class UserModule extends CoModule {
 	
 	@Override
 	protected void onEnable() throws Exception {
-		plugin.registerListener(this);
 	}
 	
 	@Override
 	protected void onDisable() throws Exception {
-	
 	}
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		User user = new UserSession(plugin, e.getPlayer());
-		user.login();
 		sessionMap.put(e.getPlayer().getUniqueId(), (UserSession)user);
 		onlineUsers.add(user);
 	}
@@ -51,9 +48,8 @@ public final class UserModule extends CoModule {
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e) {
 		User user = getUser(e.getPlayer().getName());
-		user.logout();
 		sessionMap.remove(user.getId());
-		onlineUsers.remove(user.getId());
+		onlineUsers.remove(user);
 	}
 	
 	/**
@@ -62,8 +58,10 @@ public final class UserModule extends CoModule {
 	 * @return The user if existent.
 	 */
 	public User getUser(String name) {
-		for (User user : onlineUsers) {
-			if (user.getName().equalsIgnoreCase(name)) return user;
+		for (Map.Entry<UUID, UserSession> entry : sessionMap.entrySet()) {
+			if (entry.getValue().getName().equalsIgnoreCase(name)) {
+				return entry.getValue();
+			}
 		}
 		return null;
 	}
@@ -74,10 +72,7 @@ public final class UserModule extends CoModule {
 	 * @return The user if existent.
 	 */
 	public User getUser(UUID userId) {
-		for (User user : onlineUsers) {
-			if (user.getId().equals(userId)) return user;
-		}
-		return null;
+		return sessionMap.get(userId);
 	}
 	
 	/**

@@ -10,16 +10,40 @@ import java.util.UUID;
  */
 public interface OfflineUser {
 	
+	/**
+	 * Returns the player's configuration.
+	 * @return The player configuration.
+	 */
 	IConfig getConfig();
 	
+	/**
+	 * Gets the UUID of the user.
+	 * @return The user UUID.
+	 */
 	UUID getId();
 	
+	/**
+	 * Checks if the user is muted.
+	 * @return True if the user is muted, false otherwise.
+	 */
 	boolean isMuted();
 	
+	/**
+	 * Mutes the user
+	 * @param mute True mutes the user, false does otherwise.
+	 */
 	void setMuted(boolean mute);
 	
+	/**
+	 * Checks if the user is spying
+	 * @return True if the user is spying, false otherwise.
+	 */
 	boolean isSpying();
 	
+	/**
+	 * Sets the user into spying mode.
+	 * @param spying True to enable spying, false otherwise.
+	 */
 	void setSpying(boolean spying);
 	
 	boolean isGod();
@@ -68,6 +92,10 @@ public interface OfflineUser {
 	
 	String getIp();
 	
+	/**
+	 * Gets the name of the user.
+	 * @return The
+	 */
 	String getName();
 	
 }

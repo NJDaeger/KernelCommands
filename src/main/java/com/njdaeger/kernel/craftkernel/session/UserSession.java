@@ -1,10 +1,10 @@
 package com.njdaeger.kernel.craftkernel.session;
 
 import com.coalesce.config.yml.YamlConfig;
-import com.njdaeger.kernel.craftkernel.Core;
 import com.njdaeger.kernel.Gamemode;
 import com.njdaeger.kernel.Time;
 import com.njdaeger.kernel.Weather;
+import com.njdaeger.kernel.craftkernel.Core;
 import com.njdaeger.kernel.session.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -20,18 +20,13 @@ public final class UserSession extends YamlConfig implements User {
 	//The player represented by this user.
 	private final Player player;
 	
-	//The configuration values.
-	private final Map<String, Object> keymap;
-	
 	public UserSession(Core core, Player player) {
 		super("users" + File.separator + player.getUniqueId().toString() + File.separator + "user", core);
-		this.keymap = new HashMap<>();
 		this.player = player;
-		
-		addReplace("uuid", player.getUniqueId().toString());
-		addReplace("name", player.getName());
-		addReplace("nickname", player.getDisplayName());
-		addReplace("address",player.getAddress().getAddress().getHostAddress());
+		setEntry("uuid", player.getUniqueId().toString());
+		setEntry("name", player.getName());
+		addEntry("nickname", player.getDisplayName());
+		setEntry("address",player.getAddress().getAddress().getHostAddress());
 		addEntry("muted", false);
 		addEntry("spying", false);
 		addEntry("god", false);
@@ -40,23 +35,21 @@ public final class UserSession extends YamlConfig implements User {
 		addEntry("teleportable", true);
 		addEntry("flyspeed", 1);
 		addEntry("walkspeed", 1);
-		addReplace("operator", player.isOp());
-		addReplace("gamemode", player.getGameMode().name());
+		setEntry("operator", player.isOp());
+		setEntry("gamemode", player.getGameMode().name());
 		addEntry("hidden", false);
-		addReplace("location.loginx", player.getLocation().getBlockX());
-		addReplace("location.loginy", player.getLocation().getBlockY());
-		addReplace("location.loginz", player.getLocation().getBlockZ());
-		addReplace("location.loginyaw", player.getLocation().getYaw());
-		addReplace("location.loginpitch", player.getLocation().getPitch());
-		addReplace("location.loginworld", player.getWorld().getName());
+		setEntry("location.loginx", player.getLocation().getBlockX());
+		setEntry("location.loginy", player.getLocation().getBlockY());
+		setEntry("location.loginz", player.getLocation().getBlockZ());
+		setEntry("location.loginyaw", player.getLocation().getYaw());
+		setEntry("location.loginpitch", player.getLocation().getPitch());
+		setEntry("location.loginworld", player.getWorld().getName());
 		addEntry("location.lastx", player.getLocation().getBlockX());
 		addEntry("location.lasty", player.getLocation().getBlockY());
 		addEntry("location.lastz", player.getLocation().getBlockZ());
 		addEntry("location.lastyaw", player.getLocation().getYaw());
 		addEntry("location.lastpitch", player.getLocation().getPitch());
 		addEntry("location.lastworld", player.getWorld().getName());
-		
-		getEntries().forEach(entry -> this.keymap.put(entry.getPath(), entry.getValue()));
 		
 	}
 	
@@ -72,17 +65,17 @@ public final class UserSession extends YamlConfig implements User {
 	
 	@Override
 	public UUID getId() {
-		return null;
+		return (UUID) getValue("uuid");
 	}
 	
 	@Override
 	public boolean isMuted() {
-		return false;
+		return getBoolean("muted");
 	}
 	
 	@Override
 	public void setMuted(boolean mute) {
-	
+		setEntry("muted", mute);
 	}
 	
 	@Override
