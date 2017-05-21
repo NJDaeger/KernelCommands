@@ -2,6 +2,7 @@ package com.njdaeger.kernel.session;
 
 import com.coalesce.config.IConfig;
 import com.njdaeger.kernel.Gamemode;
+import org.bukkit.Location;
 
 import java.util.UUID;
 
@@ -96,6 +97,12 @@ public interface OfflineUser {
 	 * Gets the name of the user.
 	 * @return The
 	 */
-	String getName();
+	String getPlayerName();
+	
+	LoginLocation getLoginLocation();
+	
+	LastLocation getLastLocation();
+	
+	Location getLocation();
 	
 }

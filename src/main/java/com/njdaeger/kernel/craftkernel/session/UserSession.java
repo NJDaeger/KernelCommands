@@ -5,14 +5,14 @@ import com.njdaeger.kernel.Gamemode;
 import com.njdaeger.kernel.Time;
 import com.njdaeger.kernel.Weather;
 import com.njdaeger.kernel.craftkernel.Core;
+import com.njdaeger.kernel.session.LastLocation;
+import com.njdaeger.kernel.session.LoginLocation;
 import com.njdaeger.kernel.session.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public final class UserSession extends YamlConfig implements User {
@@ -20,6 +20,17 @@ public final class UserSession extends YamlConfig implements User {
 	//The player represented by this user.
 	private final Player player;
 	
+	//Login location information.
+	private final SimpleLoginLocation loginLocation;
+	
+	//Last location information.
+	private final SimpleLastLocation lastLocation;
+	
+	/**
+	 * Creates a new user session for a player.
+	 * @param core The Kernel Core.
+	 * @param player The player to create the new session for.
+	 */
 	public UserSession(Core core, Player player) {
 		super("users" + File.separator + player.getUniqueId().toString() + File.separator + "user", core);
 		this.player = player;
@@ -38,18 +49,21 @@ public final class UserSession extends YamlConfig implements User {
 		setEntry("operator", player.isOp());
 		setEntry("gamemode", player.getGameMode().name());
 		addEntry("hidden", false);
-		setEntry("location.loginx", player.getLocation().getBlockX());
-		setEntry("location.loginy", player.getLocation().getBlockY());
-		setEntry("location.loginz", player.getLocation().getBlockZ());
+		setEntry("location.loginx", player.getLocation().getX());
+		setEntry("location.loginy", player.getLocation().getY());
+		setEntry("location.loginz", player.getLocation().getZ());
 		setEntry("location.loginyaw", player.getLocation().getYaw());
 		setEntry("location.loginpitch", player.getLocation().getPitch());
 		setEntry("location.loginworld", player.getWorld().getName());
-		addEntry("location.lastx", player.getLocation().getBlockX());
-		addEntry("location.lasty", player.getLocation().getBlockY());
-		addEntry("location.lastz", player.getLocation().getBlockZ());
+		addEntry("location.lastx", player.getLocation().getX());
+		addEntry("location.lasty", player.getLocation().getY());
+		addEntry("location.lastz", player.getLocation().getZ());
 		addEntry("location.lastyaw", player.getLocation().getYaw());
 		addEntry("location.lastpitch", player.getLocation().getPitch());
 		addEntry("location.lastworld", player.getWorld().getName());
+		
+		this.loginLocation = new SimpleLoginLocation(this);
+		this.lastLocation = new SimpleLastLocation(this);
 		
 	}
 	
@@ -59,8 +73,39 @@ public final class UserSession extends YamlConfig implements User {
 	}
 	
 	@Override
+	public void sendMessage(String message) {
+		player.sendMessage(message);
+	}
+	
+	@Override
+	public void sendMessage(String... message) {
+		
+		player.sendMessage(message);
+	}
+	
+	@Override
 	public String getIp() {
-		return null;
+		return getString("address");
+	}
+	
+	@Override
+	public String getPlayerName() {
+		return player.getName();
+	}
+	
+	@Override
+	public LoginLocation getLoginLocation() {
+		return loginLocation;
+	}
+	
+	@Override
+	public LastLocation getLastLocation() {
+		return lastLocation;
+	}
+	
+	@Override
+	public Location getLocation() {
+		return player.getLocation();
 	}
 	
 	@Override
@@ -80,7 +125,7 @@ public final class UserSession extends YamlConfig implements User {
 	
 	@Override
 	public boolean isSpying() {
-		return false;
+		return getBoolean("spying");
 	}
 	
 	@Override
@@ -90,7 +135,7 @@ public final class UserSession extends YamlConfig implements User {
 	
 	@Override
 	public boolean isGod() {
-		return false;
+		return getBoolean("god");
 	}
 	
 	@Override
@@ -100,7 +145,7 @@ public final class UserSession extends YamlConfig implements User {
 	
 	@Override
 	public boolean isMessageable() {
-		return false;
+		return getBoolean("");
 	}
 	
 	@Override

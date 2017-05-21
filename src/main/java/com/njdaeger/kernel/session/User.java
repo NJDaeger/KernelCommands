@@ -94,5 +94,16 @@ public interface User extends OfflineUser {
 	 */
 	Player getPlayer();
 	
+	/**
+	 * Sends a message to a user.
+	 * @param message The message to send.
+	 */
+	void sendMessage(String message);
+	
+	/**
+	 * Sends a message to a user. Each new message will be sent on a different line.
+	 * @param message The messages to send.
+	 */
+	void sendMessage(String... message);
 	
 }

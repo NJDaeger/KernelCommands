@@ -4,6 +4,7 @@ import com.coalesce.command.CommandContext;
 import com.coalesce.plugin.CoModule;
 import com.njdaeger.kernel.craftkernel.Core;
 import com.njdaeger.kernel.session.User;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -32,10 +33,17 @@ public final class UserModule extends CoModule {
 	
 	@Override
 	protected void onEnable() throws Exception {
+		Bukkit.getOnlinePlayers().forEach(player -> {
+			User user = new UserSession(plugin, player);
+			sessionMap.put(player.getUniqueId(), (UserSession)user);
+			onlineUsers.add(user);
+		});
 	}
 	
 	@Override
 	protected void onDisable() throws Exception {
+		onlineUsers.clear();
+		sessionMap.clear();
 	}
 	
 	@EventHandler
@@ -59,7 +67,7 @@ public final class UserModule extends CoModule {
 	 */
 	public User getUser(String name) {
 		for (Map.Entry<UUID, UserSession> entry : sessionMap.entrySet()) {
-			if (entry.getValue().getName().equalsIgnoreCase(name)) {
+			if (entry.getValue().getPlayerName().equalsIgnoreCase(name)) {
 				return entry.getValue();
 			}
 		}
