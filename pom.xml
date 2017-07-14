@@ -6,13 +6,18 @@
 
     <groupId>com.njdaeger</groupId>
     <artifactId>KernelCommands</artifactId>
-    <version>1.0</version>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <modules>
+        <module>Sponge</module>
+        <module>Bukkit</module>
+        <module>Core</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <versionSpigot>1.11.2-R0.1-SNAPSHOT</versionSpigot>
         <versionAnnotations>15.0</versionAnnotations>
         <versionMavenClean>3.0.0</versionMavenClean>
         <versionMavenShade>3.0.0</versionMavenShade>
@@ -28,6 +33,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
         <plugins>
 
             <!--Jar Generation-->
@@ -120,28 +126,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.coalesce</groupId>
-            <artifactId>Core</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.11.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 
 
 </project>
