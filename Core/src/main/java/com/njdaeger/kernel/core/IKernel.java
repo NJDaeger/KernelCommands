@@ -1,7 +1,10 @@
 package com.njdaeger.kernel.core;
 
+import com.njdaeger.kernel.core.command.base.KernelCommand;
+import com.njdaeger.kernel.core.command.base.KernelCompletion;
 import com.njdaeger.kernel.core.server.Player;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -33,5 +36,36 @@ public interface IKernel {
 	 * @return The Kernels logger
 	 */
 	Logger getLogger();
+	
+	/**
+	 * Registers a command without a tab completion
+	 * @param command The command method
+	 */
+	void addCommand(Method method, KernelCommand command);
+	
+	/**
+	 * Registers a command with a tab completion
+	 * @param command The command method
+	 * @param completion The tab completion method
+	 */
+	void addCommand(KernelCommand command, KernelCompletion completion);
+	
+	/**
+	 * Gets the name of this plugin
+	 * @return The name of the plugin
+	 */
+	String getName();
+	
+	/**
+	 * Gets the version number of the plugin
+	 * @return The plugin version
+	 */
+	String getVersion();
+	
+	/**
+	 * Gets the authors of the plugin
+	 * @return The plugin authors
+	 */
+	String getAuthors();
 	
 }
