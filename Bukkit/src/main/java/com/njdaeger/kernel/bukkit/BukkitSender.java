@@ -40,4 +40,10 @@ public class BukkitSender implements Sender {
 		if (sender instanceof ConsoleCommandSender) return SenderType.CONSOLE;
 		return SenderType.OTHER;
 	}
+	
+	@Override
+	public
+	boolean hasPermission(String permission) {
+		return false;
+	}
 }

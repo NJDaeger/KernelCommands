@@ -70,7 +70,7 @@ public class Kernel {
 	 * @param command The command method
 	 */
 	public static void addCommand(KernelCommand command) {
-		kernel.addCommand(command);
+		kernel.addCommand(null, command);
 	}
 	
 	/**

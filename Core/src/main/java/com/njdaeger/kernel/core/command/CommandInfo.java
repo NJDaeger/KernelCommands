@@ -3,6 +3,7 @@ package com.njdaeger.kernel.core.command;
 import com.njdaeger.kernel.core.command.base.Command;
 import com.njdaeger.kernel.core.command.base.KernelCommand;
 import com.njdaeger.kernel.core.command.base.KernelCompletion;
+import com.njdaeger.kernel.core.server.SenderType;
 
 import java.lang.reflect.Method;
 
@@ -17,6 +18,7 @@ public final class CommandInfo {
 	private final String[] aliases;
 	private final boolean requiresOp;
 	private final String[] permissions;
+	private final SenderType[] senderTypes;
 	private final KernelCommand kernelCommand;
 	private final KernelCompletion kernelCompletion;
 	
@@ -26,6 +28,7 @@ public final class CommandInfo {
 		} else this.command = method.getAnnotation(Command.class);
 		this.kernelCompletion = kernelCompletion;
 		this.permissions = command.permissions();
+		this.senderTypes = command.executors();
 		this.requiresOp = command.needsOp();
 		this.kernelCommand = kernelCommand;
 		this.aliases = command.aliases();
@@ -79,5 +82,9 @@ public final class CommandInfo {
 	
 	public String[] getPermissions() {
 		return permissions;
+	}
+	
+	public SenderType[] getSenderTypes() {
+		return senderTypes;
 	}
 }

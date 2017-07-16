@@ -10,8 +10,6 @@ public final class TestCommand {
 	
 	public TestCommand(IKernel kernel) {
 		this.kernel = kernel;
-		
-		kernel.addCommand(this::test);
 	}
 	
 	@Command(

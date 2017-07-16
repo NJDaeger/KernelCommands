@@ -48,7 +48,7 @@ public interface IKernel {
 	 * @param command The command method
 	 * @param completion The tab completion method
 	 */
-	void addCommand(KernelCommand command, KernelCompletion completion);
+	void addCommand(Method method, KernelCommand command, KernelCompletion completion);
 	
 	/**
 	 * Gets the name of this plugin

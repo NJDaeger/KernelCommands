@@ -73,7 +73,7 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	}
 	
 	@Override
-	public void addCommand(KernelCommand command, KernelCompletion completion) {
+	public void addCommand(Method method, KernelCommand command, KernelCompletion completion) {
 	
 	}
 	

@@ -2,6 +2,9 @@ package com.njdaeger.kernel.sponge;
 
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
+import com.njdaeger.kernel.core.command.CommandInfo;
+import com.njdaeger.kernel.core.command.base.KernelCommand;
+import com.njdaeger.kernel.core.command.base.KernelCompletion;
 import com.njdaeger.kernel.core.server.Player;
 import org.apache.commons.lang3.Validate;
 import org.spongepowered.api.Sponge;
@@ -10,6 +13,8 @@ import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,5 +68,30 @@ public class SpongeKernel implements IKernel {
 	@Override
 	public Logger getLogger() {
 		return logger;
+	}
+	
+	@Override
+	public void addCommand(Method method, KernelCommand command) {
+		new CommandInfo(method, command, null);
+	}
+	
+	@Override
+	public void addCommand(Method method, KernelCommand command, KernelCompletion completion) {
+	new CommandInfo(method, command, completion);
+	}
+	
+	@Override
+	public String getName() {
+		return Sponge.getPluginManager().fromInstance(this).get().getName();
+	}
+	
+	@Override
+	public String getVersion() {
+		return Sponge.getPluginManager().fromInstance(this).get().getVersion().orElse("Unknown");
+	}
+	
+	@Override
+	public String getAuthors() {
+		return Arrays.toString(Sponge.getPluginManager().fromInstance(this).get().getAuthors().toArray());
 	}
 }

@@ -1,5 +1,7 @@
 package com.njdaeger.kernel.core.command.base;
 
+import com.njdaeger.kernel.core.server.SenderType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
@@ -48,5 +50,10 @@ public @interface Command {
 	 * Checks if the command needs to be executed by an operator
 	 */
 	boolean needsOp() default false;
+	
+	/**
+	 * The sender needed to run this command
+	 */
+	SenderType[] executors() default SenderType.ALL;
 
 }
