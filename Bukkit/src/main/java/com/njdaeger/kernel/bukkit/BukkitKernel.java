@@ -81,7 +81,7 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 		Field field;
 		
 		try {
-			method = Class.forName(command.getClass().getCanonicalName().replace("$$", "__").split("__")[0]).getMethod(methodName, CommandContext.class);
+			method = Class.forName(command.getClass().getCanonicalName().split("\\$\\$")[0]).getMethod(methodName, CommandContext.class);
 			field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			field.setAccessible(true);
 			map = (CommandMap)field.get(Bukkit.getServer());
@@ -107,7 +107,7 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 		Field field;
 		
 		try {
-			method = Class.forName(command.getClass().getCanonicalName().replace("$$", "__").split("__")[0]).getMethod(methodName, CommandContext.class);
+			method = Class.forName(command.getClass().getCanonicalName().split("\\$\\$")[0]).getMethod(methodName, CommandContext.class);
 			field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			field.setAccessible(true);
 			map = (CommandMap)field.get(Bukkit.getServer());
