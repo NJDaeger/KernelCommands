@@ -27,13 +27,13 @@ public final class CommandRegister implements CommandCallable {
 	
 	@Override
 	public CommandResult process(CommandSource source, String arguments) throws CommandException {
-		command.run(new SpongeSender(source, kernel), arguments.split(" "));
+		command.run(new SpongeSender(source, kernel), (arguments.isEmpty() ? new String[0] : arguments.split(" ")));
 		return CommandResult.success();
 	}
 	
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> targetPosition) throws CommandException {
-		return command.complete(new SpongeSender(source, kernel), (arguments.isEmpty() ? new String[0] : arguments.split(" ")));
+		return command.complete(new SpongeSender(source, kernel), arguments.split(" "));
 	}
 	
 	@Override
