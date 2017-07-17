@@ -2,21 +2,30 @@ package com.njdaeger.kernel.sponge;
 
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
+import com.njdaeger.kernel.core.command.CommandContext;
 import com.njdaeger.kernel.core.command.CommandInfo;
 import com.njdaeger.kernel.core.command.base.KernelCommand;
 import com.njdaeger.kernel.core.command.base.KernelCompletion;
+import com.njdaeger.kernel.core.command.commands.TestCommand;
 import com.njdaeger.kernel.core.server.Player;
+import com.njdaeger.kernel.core.server.World;
+import com.njdaeger.kernel.sponge.command.CommandRegister;
 import org.apache.commons.lang3.Validate;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
+import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,12 +37,20 @@ import java.util.UUID;
 public class SpongeKernel implements IKernel {
 	
 	private final Map<String, Player> players = new HashMap<>();
+	private final Map<String, World> worlds = new HashMap<>();
 	
 	@Listener
-	public void onStart(GameStartingServerEvent e) {
+	public void onStart(GamePreInitializationEvent e) {
 		Kernel.setKernel(this);
-		Sponge.getServer().getWorlds().forEach(SpongeWorld::new);
-		Sponge.getServer().getOnlinePlayers().forEach(SpongePlayer::new);
+		Sponge.getServer().getWorlds().forEach(w -> worlds.put(w.getName(), new SpongeWorld(w)));
+		Sponge.getServer().getOnlinePlayers().forEach(p -> players.put(p.getName(), new SpongePlayer(p)));
+		
+		new TestCommand(this);
+	}
+	
+	public void onStop(GameStoppedServerEvent e) {
+		worlds.clear();
+		players.clear();
 	}
 	
 	@Listener
@@ -65,12 +82,49 @@ public class SpongeKernel implements IKernel {
 	
 	@Override
 	public void addCommand(String methodName, KernelCommand command) {
-		//new CommandInfo(method, command, null);
+		CommandInfo info = null;
+		Method method;
+		
+		try {
+			method = Class.forName(command.getClass().getCanonicalName().split("\\$\\$")[0]).getMethod(methodName, CommandContext.class);
+			info = new CommandInfo(method, command, null);
+		}
+		catch (NoSuchMethodException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		if (info == null) {
+			throw new RuntimeException("Command info could not be loaded for method " + methodName);
+		}
+		
+		List<String> aliases = new ArrayList<>();
+		aliases.addAll(Arrays.asList(info.getAliases()));
+		aliases.add(info.getName());
+		
+		Sponge.getCommandManager().register(this, new CommandRegister(info, this), aliases);
 	}
 	
 	@Override
 	public void addCommand(String methodName, KernelCommand command, KernelCompletion completion) {
-		//new CommandInfo(method, command, completion);
+		CommandInfo info = null;
+		Method method;
+		
+		try {
+			method = Class.forName(command.getClass().getCanonicalName().split("\\$\\$")[0]).getMethod(methodName, CommandContext.class);
+			info = new CommandInfo(method, command, completion);
+		}
+		catch (NoSuchMethodException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		if (info == null) {
+			throw new RuntimeException("Command info could not be loaded for method " + methodName);
+		}
+		
+		List<String> aliases = new ArrayList<>();
+		aliases.addAll(Arrays.asList(info.getAliases()));
+		aliases.add(info.getName());
+		
+		Sponge.getCommandManager().register(this, new CommandRegister(info, this), aliases);
 	}
 	
 	@Override

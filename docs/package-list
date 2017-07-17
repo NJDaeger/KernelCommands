@@ -7,3 +7,4 @@ com.njdaeger.kernel.core.command.commands
 com.njdaeger.kernel.core.server
 com.njdaeger.kernel.core.session
 com.njdaeger.kernel.sponge
+com.njdaeger.kernel.sponge.command
