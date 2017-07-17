@@ -1,6 +1,10 @@
-com.njdaeger.kernel
-com.njdaeger.kernel.commands
-com.njdaeger.kernel.craftkernel
-com.njdaeger.kernel.craftkernel.configuration
-com.njdaeger.kernel.craftkernel.session
-com.njdaeger.kernel.session
+com.njdaeger.kernel.bukkit
+com.njdaeger.kernel.bukkit.command
+com.njdaeger.kernel.core
+com.njdaeger.kernel.core.command
+com.njdaeger.kernel.core.command.base
+com.njdaeger.kernel.core.command.commands
+com.njdaeger.kernel.core.server
+com.njdaeger.kernel.core.session
+com.njdaeger.kernel.sponge
+com.njdaeger.kernel.sponge.command

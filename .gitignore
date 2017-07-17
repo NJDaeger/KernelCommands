@@ -1,6 +1,9 @@
 out
 gen
 jars
+Sponge/docs
+Bukkit/docs
+Core/docs
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
