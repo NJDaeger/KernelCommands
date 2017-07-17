@@ -19,6 +19,11 @@ public final class BukkitPlayer implements com.njdaeger.kernel.core.server.Playe
 	}
 	
 	@Override
+	public String getName() {
+		return player.getName();
+	}
+	
+	@Override
 	public boolean hasPermission(String permission) {
 		return player.hasPermission(permission);
 	}

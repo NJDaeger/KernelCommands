@@ -3,11 +3,14 @@ package com.njdaeger.kernel.core.command.base;
 import com.njdaeger.kernel.core.server.SenderType;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
  * Declares a method as a command
  */
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Command {
 	

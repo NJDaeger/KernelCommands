@@ -19,17 +19,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 @Plugin(
 		id = "kernelcommands",
-		name = "Kernel Commands Sponge",
+		name = "KernelCommands Sponge",
 		version = "1.0.0",
 		authors = "NJDaeger")
 public class SpongeKernel implements IKernel {
 	
 	private final Map<String, Player> players = new HashMap<>();
-	private final Logger logger = Logger.getLogger("KernelCommands");
 	
 	@Listener
 	public void onStart(GameStartingServerEvent e) {
@@ -66,32 +64,36 @@ public class SpongeKernel implements IKernel {
 	}
 	
 	@Override
-	public Logger getLogger() {
-		return logger;
+	public void addCommand(String methodName, KernelCommand command) {
+		//new CommandInfo(method, command, null);
 	}
 	
 	@Override
-	public void addCommand(Method method, KernelCommand command) {
-		new CommandInfo(method, command, null);
-	}
-	
-	@Override
-	public void addCommand(Method method, KernelCommand command, KernelCompletion completion) {
-	new CommandInfo(method, command, completion);
+	public void addCommand(String methodName, KernelCommand command, KernelCompletion completion) {
+		//new CommandInfo(method, command, completion);
 	}
 	
 	@Override
 	public String getName() {
-		return Sponge.getPluginManager().fromInstance(this).get().getName();
+		if (Sponge.getPluginManager().fromInstance(this).isPresent()) {
+			return Sponge.getPluginManager().fromInstance(this).get().getName();
+		}
+		else return "Unknown";
 	}
 	
 	@Override
 	public String getVersion() {
-		return Sponge.getPluginManager().fromInstance(this).get().getVersion().orElse("Unknown");
+		if (Sponge.getPluginManager().fromInstance(this).isPresent()) {
+			return Sponge.getPluginManager().fromInstance(this).get().getVersion().orElse("Unknown");
+		}
+		else return "Unknown";
 	}
 	
 	@Override
 	public String getAuthors() {
-		return Arrays.toString(Sponge.getPluginManager().fromInstance(this).get().getAuthors().toArray());
+		if (Sponge.getPluginManager().fromInstance(this).isPresent()) {
+			return Arrays.toString(Sponge.getPluginManager().fromInstance(this).get().getAuthors().toArray());
+		}
+		return "Unknown";
 	}
 }

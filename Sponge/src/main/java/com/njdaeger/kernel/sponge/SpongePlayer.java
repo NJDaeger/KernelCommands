@@ -20,6 +20,11 @@ public class SpongePlayer implements com.njdaeger.kernel.core.server.Player {
 	}
 	
 	@Override
+	public String getName() {
+		return player.getName();
+	}
+	
+	@Override
 	public boolean hasPermission(String permission) {
 		return player.hasPermission(permission);
 	}

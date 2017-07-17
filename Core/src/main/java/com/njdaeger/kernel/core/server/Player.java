@@ -13,6 +13,12 @@ public interface Player {
 	UUID getUserID();
 	
 	/**
+	 * Gets the name of the player
+	 * @return The player name
+	 */
+	String getName();
+	
+	/**
 	 * Checks if the user has permission
 	 * @param permission The permission node to look for
 	 * @return True if the player has permission

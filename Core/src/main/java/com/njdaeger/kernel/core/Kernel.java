@@ -4,6 +4,7 @@ import com.njdaeger.kernel.core.command.base.KernelCommand;
 import com.njdaeger.kernel.core.command.base.KernelCompletion;
 import com.njdaeger.kernel.core.server.Player;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -69,8 +70,8 @@ public class Kernel {
 	 * Registers a command without a tab completion
 	 * @param command The command method
 	 */
-	public static void addCommand(KernelCommand command) {
-		kernel.addCommand(null, command);
+	public static void addCommand(String methodName, KernelCommand command) {
+		kernel.addCommand(methodName, command);
 	}
 	
 	/**
@@ -78,7 +79,7 @@ public class Kernel {
 	 * @param command The command method
 	 * @param completion The tab completion method
 	 */
-	public static void addCommand(KernelCommand command, KernelCompletion completion) {
-		kernel.addCommand(command, completion);
+	public static void addCommand(String methodName, KernelCommand command, KernelCompletion completion) {
+		kernel.addCommand(methodName, command, completion);
 	}
 }

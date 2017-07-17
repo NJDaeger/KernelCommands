@@ -42,8 +42,12 @@ public class BukkitSender implements Sender {
 	}
 	
 	@Override
-	public
-	boolean hasPermission(String permission) {
-		return false;
+	public boolean hasPermission(String permission) {
+		return sender.hasPermission(permission);
+	}
+	
+	@Override
+	public boolean isOp() {
+		return sender.isOp();
 	}
 }

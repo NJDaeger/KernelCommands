@@ -35,20 +35,22 @@ public interface IKernel {
 	 * Gets the Kernel's Logger
 	 * @return The Kernels logger
 	 */
-	Logger getLogger();
+	default Logger getLogger() {
+		return Logger.getLogger("KernelCommands");
+	}
 	
 	/**
 	 * Registers a command without a tab completion
 	 * @param command The command method
 	 */
-	void addCommand(Method method, KernelCommand command);
+	void addCommand(String methodName, KernelCommand command);
 	
 	/**
 	 * Registers a command with a tab completion
 	 * @param command The command method
 	 * @param completion The tab completion method
 	 */
-	void addCommand(Method method, KernelCommand command, KernelCompletion completion);
+	void addCommand(String methodName, KernelCommand command, KernelCompletion completion);
 	
 	/**
 	 * Gets the name of this plugin

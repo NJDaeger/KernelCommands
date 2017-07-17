@@ -1,6 +1,5 @@
 package com.njdaeger.kernel.core.command;
 
-import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.server.Sender;
 
 import java.util.Arrays;
@@ -9,48 +8,45 @@ import java.util.List;
 public final class CommandContext {
 
 	private final Sender sender;
-	private final IKernel kernel;
 	private final List<String> args;
 	
-	public CommandContext(Sender sender, String[] args, IKernel kernel) {
+	public CommandContext(Sender sender, String[] args) {
 		this.sender = sender;
-		this.kernel = kernel;
 		this.args = Arrays.asList(args);
 	}
 	
-	public IKernel getKernel() {
-		return kernel;
-	}
-	
 	public void pluginMessage(String message) {
-		sender.sendMessage("");
+		send("");
 	}
 	
 	public List<String> getArgs() {
-		return null;
+		return args;
 	}
 	
 	public boolean hasArgs() {
-		return false;
+		return !args.isEmpty();
 	}
 	
 	public String argAt(int index) {
-		return null;
+		if (index < 0 || index >= args.size()) return null;
+		return args.get(index);
 	}
 	
 	public String joinArgs(int start, int finish) {
-		return null;
+		if (args.isEmpty()) return "";
+		return String.join(" ", args.subList(start, finish));
 	}
 	
 	public String joinArgs(int start) {
-		return null;
+		return joinArgs(start, args.size());
 	}
 	
 	public String joinArgs() {
-		return null;
+		return joinArgs(0);
 	}
 	
 	public void send(String message) {
+		sender.sendMessage(message);
 	}
 
 }
