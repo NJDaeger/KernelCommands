@@ -1,5 +1,7 @@
 package com.njdaeger.kernel.core.command;
 
+import com.njdaeger.kernel.core.Kernel;
+import com.njdaeger.kernel.core.Platform;
 import com.njdaeger.kernel.core.command.base.Command;
 import com.njdaeger.kernel.core.command.base.KernelCommand;
 import com.njdaeger.kernel.core.command.base.KernelCompletion;
@@ -17,7 +19,6 @@ public final class CommandInfo {
 	private final String name;
 	private final String desc;
 	private final String usage;
-	private final Command command;
 	private final String[] aliases;
 	private final boolean requiresOp;
 	private final String[] permissions;
@@ -26,9 +27,10 @@ public final class CommandInfo {
 	private final KernelCompletion kernelCompletion;
 	
 	public CommandInfo(Method method, KernelCommand kernelCommand, KernelCompletion kernelCompletion) {
+		Command command;
 		if (!method.isAnnotationPresent(Command.class)) {
-			throw new RuntimeException("");
-		} else this.command = method.getAnnotation(Command.class);
+			throw new RuntimeException("Cannot find command annotation at " + method.getName());
+		} else command = method.getAnnotation(Command.class);
 		this.kernelCompletion = kernelCompletion;
 		this.permissions = command.permissions();
 		this.senderTypes = command.executors();
@@ -43,50 +45,74 @@ public final class CommandInfo {
 		
 	}
 	
-	public KernelCommand getKernelCommand() {
-		return kernelCommand;
-	}
-	
-	public KernelCompletion getKernelCompletion() {
-		return kernelCompletion;
-	}
-	
+	/**
+	 * Gets the minimum amount of arguments allowed to run a command
+	 * @return The minimum needed to run a command
+	 */
 	public int getMin() {
 		return min;
 	}
 	
+	/**
+	 * Gets the maximum amount of arguments allowed to be in a command
+	 * @return The maximum allowed arguments to run a command
+	 */
 	public int getMax() {
 		return max;
 	}
 	
+	/**
+	 * Gets the name of the command
+	 * @return The command name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Gets the description of the command
+	 * @return The command description
+	 */
 	public String getDesc() {
 		return desc;
 	}
 	
+	/**
+	 * Checks if the command needs to have an operator run this command
+	 * @return True if only operators can run this command
+	 */
 	public boolean needsOp() {
 		return requiresOp;
 	}
 	
+	/**
+	 * Gets the command usage
+	 * @return The command usage
+	 */
 	public String getUsage() {
 		return usage;
 	}
 	
-	public Command getCommand() {
-		return command;
-	}
-	
+	/**
+	 * Gets all the aliases used to run this command
+	 * @return The command aliases
+	 */
 	public String[] getAliases() {
 		return aliases;
 	}
 	
+	/**
+	 * Gets all the permissions needed to run this command
+	 * @return The permissions needed
+	 */
 	public String[] getPermissions() {
 		return permissions;
 	}
 	
+	/**
+	 * Gets the types of senders allowed to run this command
+	 * @return The sender types
+	 */
 	public SenderType[] getSenderTypes() {
 		return senderTypes;
 	}
@@ -119,7 +145,7 @@ public final class CommandInfo {
 			sender.sendMessage("You cannot run this command.");
 			return true;
 		}
-		if (command.needsOp() && !sender.isOp()) {
+		if (Kernel.getPlatform() == Platform.BUKKIT && this.needsOp() && !sender.isOp()) {
 			sender.sendMessage("Only Operators can run this command.");
 			return true;
 		}
@@ -135,16 +161,16 @@ public final class CommandInfo {
 			sender.sendMessage("Not Enough Args");
 			return true;
 		}
-		this.getKernelCommand().run(new CommandContext(sender, args));
+		this.kernelCommand.run(new CommandContext(sender, args));
 		return true;
 	}
 	
 	public List<String> complete(Sender sender, String[] args) {
 		List<String> sub = new ArrayList<>();
 		
-		if (this.getKernelCompletion() != null) {
+		if (this.kernelCompletion != null) {
 			TabContext context = new TabContext(new CommandContext(sender, args), this, sender, args);
-			this.getKernelCompletion().complete(context);
+			this.kernelCompletion.complete(context);
 			for (String completion : context.currentPossibleCompletion()) {
 				if (completion.toLowerCase().startsWith(context.getCommandContext().argAt(context.getCommandContext().getArgs().size() - 1))) {
 					sub.add(completion);

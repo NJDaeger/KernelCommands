@@ -82,4 +82,13 @@ public class Kernel {
 	public static void addCommand(String methodName, KernelCommand command, KernelCompletion completion) {
 		kernel.addCommand(methodName, command, completion);
 	}
+	
+	/**
+	 * Gets the server platform
+	 * @return The server platform
+	 */
+	 public static Platform getPlatform() {
+		return kernel.getPlatform();
+	}
+	
 }

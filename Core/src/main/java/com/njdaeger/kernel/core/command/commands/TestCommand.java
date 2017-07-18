@@ -1,5 +1,6 @@
 package com.njdaeger.kernel.core.command.commands;
 
+import com.njdaeger.kernel.core.Color;
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.command.CommandContext;
 import com.njdaeger.kernel.core.command.TabContext;
@@ -17,7 +18,7 @@ public final class TestCommand {
 	
 	@Command(name = "test")
 	public void test(CommandContext context) {
-		context.send("hello");
+		context.send(Color.RED + "hello");
 	}
 	
 	public void testTab(TabContext context) {
