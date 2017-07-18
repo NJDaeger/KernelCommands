@@ -2,6 +2,7 @@ package com.njdaeger.kernel.sponge;
 
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
+import com.njdaeger.kernel.core.Platform;
 import com.njdaeger.kernel.core.command.CommandContext;
 import com.njdaeger.kernel.core.command.CommandInfo;
 import com.njdaeger.kernel.core.command.base.KernelCommand;
@@ -147,5 +148,10 @@ public class SpongeKernel implements IKernel {
 			return Arrays.toString(Sponge.getPluginManager().fromInstance(this).get().getAuthors().toArray());
 		}
 		return "Unknown";
+	}
+	
+	@Override
+	public Platform getPlatform() {
+		return Platform.SPONGE;
 	}
 }

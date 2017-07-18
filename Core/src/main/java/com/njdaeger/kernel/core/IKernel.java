@@ -70,4 +70,10 @@ public interface IKernel {
 	 */
 	String getAuthors();
 	
+	/**
+	 * Gets the server platform.
+	 * @return The server platform
+	 */
+	Platform getPlatform();
+	
 }

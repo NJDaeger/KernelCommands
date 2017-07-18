@@ -1,6 +1,5 @@
 package com.njdaeger.kernel.core.command;
 
-import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
 import com.njdaeger.kernel.core.server.Player;
 import com.njdaeger.kernel.core.server.Sender;
@@ -26,34 +25,69 @@ public class TabContext {
 		this.args = args;
 	}
 	
+	/**
+	 * Gets the command context of the command being executed
+	 * @return The command context
+	 */
 	public CommandContext getCommandContext() {
 		return context;
 	}
 	
+	/**
+	 * Gets the command info of the command being executed
+	 * @return The command info
+	 */
 	public CommandInfo getCommand() {
 		return command;
 	}
 	
+	/**
+	 * Gets the Sender that's executing the command.
+	 * @return The command sender.
+	 */
 	public Sender getSender() {
 		return sender;
 	}
 	
+	/**
+	 * Gets how many args there are.
+	 * @return The amount of args.
+	 */
 	public int getLength() {
 		return args.length - 1;
 	}
 	
+	/**
+	 * Checks if the arg length equals another length
+	 * @param length The length to look for.
+	 * @return True if the length matches
+	 */
 	public boolean length(int length) {
 		return getLength() == length;
 	}
 	
+	/**
+	 * Gets the previous argument in the command
+	 * @return The previous arg
+	 */
 	public String getPrevious() {
 		return context.getArgs().get(getLength());
 	}
 	
+	/**
+	 * Checks if the previous arg equals another string.
+	 * @param previousArg The arg to look for.
+	 * @return True if the previous arg matches the provided
+	 */
 	public boolean previous(String previousArg) {
 		return getPrevious().matches(previousArg);
 	}
 	
+	/**
+	 * A quick player completion for tab completes.
+	 * @param index The index to run this completion at
+	 * @param predicate A filter of the players
+	 */
 	public void playerCompletion(int index, Predicate<? super Player> predicate) {
 		if (length(index)) {
 			possible.clear();
@@ -61,6 +95,10 @@ public class TabContext {
 		}
 	}
 	
+	/**
+	 * A quick player completion for tab completes.
+	 * @param index The index to run this completion at.
+	 */
 	public void playerCompletion(int index) {
 		if (length(index)) {
 			possible.clear();
@@ -68,11 +106,20 @@ public class TabContext {
 		}
 	}
 	
+	/**
+	 * A quick tab complete method for any point in the command
+	 * @param completions The completions to use
+	 */
 	public void completion(String... completions) {
 		possible.clear();
 		possible.addAll(Arrays.asList(completions));
 	}
 	
+	/**
+	 * A quick tab complete method for a specific index in the command
+	 * @param index The index for this tab completion to take place
+	 * @param completions The completions to use
+	 */
 	public void completionAt(int index, String... completions) {
 		if (length(index)) {
 			possible.clear();
@@ -80,6 +127,11 @@ public class TabContext {
 		}
 	}
 	
+	/**
+	 * A quick tab complete method for use after a specific keyword
+	 * @param previousText The previous string to look for
+	 * @param completions The completions to use
+	 */
 	public void completionAfter(String previousText, String... completions) {
 		if (previous(previousText)) {
 			possible.clear();
@@ -87,7 +139,7 @@ public class TabContext {
 		}
 	}
 	
-	public List<String> currentPossibleCompletion() {
+	List<String> currentPossibleCompletion() {
 		return possible;
 	}
 	

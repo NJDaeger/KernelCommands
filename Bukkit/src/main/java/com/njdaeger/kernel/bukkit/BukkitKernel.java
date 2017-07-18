@@ -3,6 +3,7 @@ package com.njdaeger.kernel.bukkit;
 import com.njdaeger.kernel.bukkit.command.CommandRegister;
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
+import com.njdaeger.kernel.core.Platform;
 import com.njdaeger.kernel.core.command.CommandContext;
 import com.njdaeger.kernel.core.command.CommandInfo;
 import com.njdaeger.kernel.core.command.base.KernelCommand;
@@ -133,5 +134,10 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	@Override
 	public String getAuthors() {
 		return Arrays.toString(getDescription().getAuthors().toArray());
+	}
+	
+	@Override
+	public Platform getPlatform() {
+		return Platform.BUKKIT;
 	}
 }
