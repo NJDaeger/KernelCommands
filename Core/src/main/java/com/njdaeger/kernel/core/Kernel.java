@@ -4,12 +4,12 @@ import com.njdaeger.kernel.core.command.base.KernelCommand;
 import com.njdaeger.kernel.core.command.base.KernelCompletion;
 import com.njdaeger.kernel.core.server.Player;
 
-import java.lang.reflect.Method;
+import java.io.File;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class Kernel {
+public final class Kernel {
 	
 	private static IKernel kernel;
 	
@@ -89,6 +89,14 @@ public class Kernel {
 	 */
 	 public static Platform getPlatform() {
 		return kernel.getPlatform();
+	}
+	
+	/**
+	 * Gets the folder holding the mods/plugins
+	 * @return The plugins directory
+	 */
+	public static File getPluginDirectory() {
+	 	return kernel.getPluginDirectory();
 	}
 	
 }

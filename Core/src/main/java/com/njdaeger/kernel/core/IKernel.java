@@ -4,6 +4,7 @@ import com.njdaeger.kernel.core.command.base.KernelCommand;
 import com.njdaeger.kernel.core.command.base.KernelCompletion;
 import com.njdaeger.kernel.core.server.Player;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.UUID;
@@ -75,5 +76,11 @@ public interface IKernel {
 	 * @return The server platform
 	 */
 	Platform getPlatform();
+	
+	/**
+	 * Gets the plugins directory
+	 * @return The plugins directory
+	 */
+	File getPluginDirectory();
 	
 }

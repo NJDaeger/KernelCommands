@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import java.util.UUID;
 
 public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	
+	private final File pluginDir = new File("plugins");
 	private final Map<String, Player> players = new HashMap<>();
 	private final Map<String, World> worlds = new HashMap<>();
 	
@@ -140,4 +142,10 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	public Platform getPlatform() {
 		return Platform.BUKKIT;
 	}
+	
+	@Override
+	public File getPluginDirectory() {
+		return pluginDir;
+	}
+	
 }
