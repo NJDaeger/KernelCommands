@@ -26,7 +26,7 @@ public final class TestCommand {
 	}
 	
 	@Command(name = "butt")
-	public void text(CommandContext context, String args){
+	public void text(CommandContext context){
 	
 	}
 	

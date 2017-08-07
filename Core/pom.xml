@@ -20,12 +20,6 @@
             <version>1.9</version>
         </dependency>
 
-<!--        <dependency>
-            <groupId>com.njdaeger</groupId>
-            <artifactId>KernelCommands-Processor</artifactId>
-            <version>1.0.0</version>
-        </dependency>-->
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -49,6 +43,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <verbose>true</verbose>
                 </configuration>
 
                 <executions>

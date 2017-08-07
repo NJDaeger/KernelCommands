@@ -4,7 +4,6 @@ import com.njdaeger.kernel.core.command.CommandContext;
 import com.njdaeger.kernel.core.command.base.Command;
 
 import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
@@ -29,7 +28,8 @@ public class CommandProcessor extends AbstractProcessor {
 				
 				ExecutableType method = (ExecutableType)e.asType();
 				out(Diagnostic.Kind.WARNING, method.getKind().name());
-				if (method.getKind() != TypeKind.VOID) {
+				
+				if (method.getReturnType().getKind() != TypeKind.VOID) {
 					out(Diagnostic.Kind.ERROR,
 							"Cannot Process Command annotation for method: " + e.getSimpleName() +
 									"Methods annotated with the Command annotation should " +
