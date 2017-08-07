@@ -6,6 +6,7 @@ import com.njdaeger.kernel.core.configuration.IConfig;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public abstract class Config implements IConfig {
@@ -15,67 +16,63 @@ public abstract class Config implements IConfig {
 	private final File dir, file;
 	
 	public Config(Format format, String name) {
+		
 		this.dir = Kernel.getPluginDirectory();
 		this.format = format;
 		this.name = name;
+		FileInputStream stream = null;
+		
 		if (format == Format.YML) {
-			this.file = new File(dir, name + ".yml");
-			
+			this.file = new File(dir + File.separator + "KernelCommands", name + ".yml");
 			if (!file.exists()) {
+				
 				try {
 					file.createNewFile();
+					stream = new FileInputStream(file);
 				}
 				catch (IOException e) {
 					e.printStackTrace();
 				}
+				
 			}
+			
+			Yaml yaml = new Yaml();
+			yaml.dump(yaml.load(stream));
 		}
+		
 		else{
 			this.file = new File(dir, name + ".json");
-			
-			if (!file.exists()) {
-				try {
-					file.createNewFile();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 	
 	public Config(Format format, String name, File location) {
+		
 		this.dir = Kernel.getPluginDirectory();
 		this.format = format;
 		this.name = name;
+		FileInputStream stream = null;
+		
 		if (format == Format.YML) {
-			this.file = new File(name + ".yml");
-			
+			this.file = new File(dir + File.separator + location, name + ".yml");
 			if (!file.exists()) {
+				
 				try {
-					location.mkdirs();
-					Yaml yaml = new Yaml();
 					file.createNewFile();
+					stream = new FileInputStream(file);
 				}
 				catch (IOException e) {
 					e.printStackTrace();
 				}
+				
 			}
+			
+			Yaml yaml = new Yaml();
+			yaml.dump(yaml.load(stream));
 		}
+		
 		else{
 			this.file = new File( name + ".json");
-			
-			if (!file.exists()) {
-				try {
-					location.mkdirs();
-					file.createNewFile();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		
 	}
-	
 }

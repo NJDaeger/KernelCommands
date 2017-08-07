@@ -25,4 +25,9 @@ public final class TestCommand {
 		context.playerCompletion(0);
 	}
 	
+	@Command(name = "butt")
+	public void text(CommandContext context, String args){
+	
+	}
+	
 }

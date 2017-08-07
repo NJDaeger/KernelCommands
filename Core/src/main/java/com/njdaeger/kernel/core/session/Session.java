@@ -1,4 +1,4 @@
 package com.njdaeger.kernel.core.session;
 
-public class Session {
+public final class Session {
 }

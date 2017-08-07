@@ -19,6 +19,7 @@ import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,5 +154,10 @@ public class SpongeKernel implements IKernel {
 	@Override
 	public Platform getPlatform() {
 		return Platform.SPONGE;
+	}
+	
+	@Override
+	public File getPluginDirectory() {
+		return Sponge.getPluginManager().fromInstance(this).get().getSource().get().getParent().toFile();
 	}
 }

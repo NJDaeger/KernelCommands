@@ -39,4 +39,14 @@ public enum Color {
 	public String toString() {
 		return new String(new char[] {CHAR, code});
 	}
+	
+	/**
+	 * Makes the given string have color with any character
+	 * @param specialCharacter The prefix to a chat color
+	 * @param base The string to parse
+	 * @return The parsed string.
+	 */
+	public String translate(char specialCharacter, String base) {
+		return base.replace(specialCharacter, CHAR);
+	}
 }

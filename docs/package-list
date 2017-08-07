@@ -4,7 +4,11 @@ com.njdaeger.kernel.core
 com.njdaeger.kernel.core.command
 com.njdaeger.kernel.core.command.base
 com.njdaeger.kernel.core.command.commands
+com.njdaeger.kernel.core.configuration
+com.njdaeger.kernel.core.configuration.common
+com.njdaeger.kernel.core.configuration.yml
 com.njdaeger.kernel.core.server
 com.njdaeger.kernel.core.session
+com.njdaeger.kernel.process
 com.njdaeger.kernel.sponge
 com.njdaeger.kernel.sponge.command

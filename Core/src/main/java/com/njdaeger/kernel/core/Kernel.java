@@ -2,7 +2,11 @@ package com.njdaeger.kernel.core;
 
 import com.njdaeger.kernel.core.command.base.KernelCommand;
 import com.njdaeger.kernel.core.command.base.KernelCompletion;
+import com.njdaeger.kernel.core.configuration.Format;
+import com.njdaeger.kernel.core.configuration.IConfig;
+import com.njdaeger.kernel.core.configuration.yml.YmlConfig;
 import com.njdaeger.kernel.core.server.Player;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.Collection;
@@ -30,6 +34,7 @@ public final class Kernel {
 			throw new UnsupportedOperationException("The Kernel is already defined.");
 		}
 		Kernel.kernel = kernel;
+		new Cfg();
 	}
 	
 	/**
@@ -98,5 +103,4 @@ public final class Kernel {
 	public static File getPluginDirectory() {
 	 	return kernel.getPluginDirectory();
 	}
-	
 }

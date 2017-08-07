@@ -1,14 +1,72 @@
 package com.njdaeger.kernel.core.configuration.yml;
 
+import com.njdaeger.kernel.core.Kernel;
 import com.njdaeger.kernel.core.configuration.Format;
 import com.njdaeger.kernel.core.configuration.IConfig;
 import com.njdaeger.kernel.core.configuration.IEntry;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public final class YmlConfig implements IConfig {
+public abstract class YmlConfig implements IConfig {
+	
+	private FileInputStream stream = null;
+	private static final Map<?, ?> KEYS;
+	private static final Yaml YAML;
+	private static final File DIR;
+	private final String name;
+	private final File file;
+	
+	public YmlConfig(String name) {
+		
+		this.file = new File(DIR + File.separator + "KernelCommands", name + ".yml");
+		this.name = name;
+		
+		if (!file.exists()) {
+			try {
+				this.file.createNewFile();
+				this.stream = new FileInputStream(file);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		YAML.dump(YAML.load(stream));
+		
+	}
+	
+	public YmlConfig(String name, File location) {
+		
+		this.file = new File(DIR + File.separator + location, name + ".yml");
+		this.name = name;
+		
+		if (!file.exists()) {
+			try {
+				this.file.createNewFile();
+				this.stream = new FileInputStream(file);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		YAML.dump(YAML.load(stream));
+		
+	}
+	
+	static {
+		
+		KEYS = new HashMap<>();
+		YAML = new Yaml();
+		DIR = Kernel.getPluginDirectory();
+	}
 	
 	@Override
 	public IEntry getEntry(String path) {
@@ -107,12 +165,12 @@ public final class YmlConfig implements IConfig {
 	
 	@Override
 	public String getName() {
-		return null;
+		return name;
 	}
 	
 	@Override
 	public File getFile() {
-		return null;
+		return file;
 	}
 	
 	@Override
