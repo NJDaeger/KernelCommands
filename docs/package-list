@@ -1,7 +1,6 @@
 com.njdaeger.kernel.bukkit
 com.njdaeger.kernel.bukkit.command
 com.njdaeger.kernel.core
-com.njdaeger.kernel.core.command
 com.njdaeger.kernel.core.command.base
 com.njdaeger.kernel.core.command.commands
 com.njdaeger.kernel.core.configuration

@@ -1,15 +1,15 @@
 package com.njdaeger.kernel.bukkit;
 
-import com.njdaeger.kernel.bukkit.command.CommandRegister;
+import com.njdaeger.kernel.bukkit.command.BukkitCommandStore;
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
 import com.njdaeger.kernel.core.Platform;
 import com.njdaeger.kernel.core.command.base.CommandStore;
+import com.njdaeger.kernel.core.command.commands.TestCommand;
 import com.njdaeger.kernel.core.server.Player;
 import com.njdaeger.kernel.core.server.World;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandMap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,72 +25,58 @@ import java.util.UUID;
 
 public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	
-	private final CommandStore commandStore = new CommandStore();
-	private final File pluginDir = new File("plugins");
-	private final Map<String, Player> players = new HashMap<>();
-	private final Map<String, World> worlds = new HashMap<>();
+	private static final Map<String, Player> PLAYERS;
+	private static final Map<String, World> WORLDS;
+	private static final CommandStore STORE;
+	private static final File PLUGIN_DIR;
+	
+	static {
+		STORE = new BukkitCommandStore(Kernel.getKernel());
+		PLUGIN_DIR = new File("plugins");
+		PLAYERS = new HashMap<>();
+		WORLDS = new HashMap<>();
+	}
 	
 	@Override
 	public void onEnable() {
 		Kernel.setKernel(this);
 		Bukkit.getPluginManager().registerEvents(this, this);
-		Bukkit.getWorlds().forEach(w -> worlds.put(w.getName(), new BukkitWorld(w)));
-		Bukkit.getOnlinePlayers().forEach(p -> players.put(p.getName(), new BukkitPlayer(p)));
+		Bukkit.getWorlds().forEach(w -> WORLDS.put(w.getName(), new BukkitWorld(w)));
+		Bukkit.getOnlinePlayers().forEach(p -> PLAYERS.put(p.getName(), new BukkitPlayer(p)));
+		getCommandStore().registerClass(new TestCommand());
 	}
 	
 	@Override
 	public void onDisable() {
-		players.clear();
+		PLAYERS.clear();
+		WORLDS.clear();
 	}
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		players.put(e.getPlayer().getName(), new BukkitPlayer(e.getPlayer()));
+		PLAYERS.put(e.getPlayer().getName(), new BukkitPlayer(e.getPlayer()));
 	}
 	
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
-		players.remove(e.getPlayer().getName());
+		PLAYERS.remove(e.getPlayer().getName());
 	}
 	
 	@Override
 	public Collection<Player> getPlayers() {
-		return players.values();
+		return PLAYERS.values();
 	}
 	
 	@Override
 	public Player getPlayer(String name) {
 		Validate.notNull(name, "Player name cannot be null");
-		return players.get(name);
+		return PLAYERS.get(name);
 	}
 	
 	@Override
 	public Player getPlayer(UUID userID) {
 		Validate.notNull(userID, "Player UUID cannot be null");
 		return null;
-	}
-	
-	private void registerCommands() {
-		try {
-			
-			Field field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-			field.setAccessible(true);
-			CommandMap map = (CommandMap)field.get(Bukkit.getServer());
-			
-			if (map == null) {
-				throw new RuntimeException("Bukkit CommandMap could not be found");
-			}
-			
-			getCommandStore().getCommandMap().forEach((name, info) -> {
-				if (map.getCommand(name) == null) {
-					map.register(getName(), new CommandRegister(info, this));
-				}
-			});
-		}
-		
-		catch (NoSuchFieldException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Override
@@ -111,11 +96,11 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	
 	@Override
 	public File getPluginDirectory() {
-		return pluginDir;
+		return PLUGIN_DIR;
 	}
 	
 	@Override
 	public CommandStore getCommandStore() {
-		return commandStore;
+		return STORE;
 	}
 }

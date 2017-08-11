@@ -1,12 +1,10 @@
 package com.njdaeger.kernel.core.command.base;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public final class CommandStore {
+public abstract class CommandStore {
 	
 	private final Map<String[], CompletionInfo> completionMap;
 	private final Map<String, CommandInfo> commandMap;
@@ -14,6 +12,18 @@ public final class CommandStore {
 	public CommandStore() {
 		this.commandMap = new HashMap<>();
 		this.completionMap = new HashMap<>();
+	}
+	
+	/**
+	 * Registers a command into either platforms command map
+	 * @param info The command information
+	 */
+	public abstract void registerCommand(CommandInfo info);
+
+	public abstract boolean isRegistered(String commandName);
+	
+	public CommandInfo getCommand(String name) {
+		return getCommandMap().get(name);
 	}
 	
 	/**
@@ -44,40 +54,9 @@ public final class CommandStore {
 				}
 			}
 		});
-	}
-	
-	/**
-	 * Unregisters a class' commands and tab completions. (anything annotated with Command and Completion)
-	 * @param commandClass The class to unregister commands.
-	 */
-	public void unregisterClass(Class<?> commandClass) {
-		List<String> removedCommands = new ArrayList<>();
-		List<String[]> removedCompletions = new ArrayList<>();
-		commandMap.forEach((n, i) -> {
-			if (i.getMethod().getDeclaringClass().equals(commandClass)) removedCommands.add(n);
+		commandMap.forEach((name, info) -> {
+			if (!isRegistered(name)) registerCommand(info);
 		});
-		completionMap.forEach((n, i) -> {
-			if (i.getMethod().getDeclaringClass().equals(commandClass)) removedCompletions.add(i.getCommands());
-		});
-		removedCommands.forEach(commandMap::remove);
-		removedCompletions.forEach(completionMap::remove);
-	}
-	
-	/**
-	 * Unregisters a command by name (Will not remove the command from any tab completions)
-	 * @param name The name of the command
-	 */
-	public void unregisterCommand(String name) {
-		commandMap.remove(name);
-	}
-	
-	/**
-	 * Checks if a command is registered or not
-	 * @param command The command to check if registered
-	 * @return True if the command is registered in the Kernel's command map
-	 */
-	public boolean isRegistered(String command) {
-		return commandMap.keySet().contains(command);
 	}
 	
 	/**

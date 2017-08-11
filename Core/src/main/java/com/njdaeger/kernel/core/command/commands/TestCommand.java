@@ -16,6 +16,7 @@ public final class TestCommand {
 	@Completion(commands = {"test", "butt"})
 	public void testTab(TabContext context) {
 		context.playerCompletion(0);
+		context.completionAt(1, "bork", "boot");
 	}
 	
 	@Command(name = "butt")

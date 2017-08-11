@@ -1,8 +1,6 @@
 package com.njdaeger.kernel.core;
 
 import com.njdaeger.kernel.core.command.base.CommandStore;
-import com.njdaeger.kernel.core.command.base.KernelCommand;
-import com.njdaeger.kernel.core.command.base.KernelCompletion;
 import com.njdaeger.kernel.core.server.Player;
 
 import java.io.File;
