@@ -1,4 +1,4 @@
-package com.njdaeger.kernel.core.command;
+package com.njdaeger.kernel.core.command.base;
 
 import com.njdaeger.kernel.core.Kernel;
 import com.njdaeger.kernel.core.server.Player;

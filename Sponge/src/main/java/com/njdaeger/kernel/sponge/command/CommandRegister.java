@@ -1,7 +1,7 @@
 package com.njdaeger.kernel.sponge.command;
 
 import com.njdaeger.kernel.core.IKernel;
-import com.njdaeger.kernel.core.command.CommandInfo;
+import com.njdaeger.kernel.core.command.base.CommandInfo;
 import com.njdaeger.kernel.sponge.SpongeSender;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;

@@ -1,7 +1,5 @@
 package com.njdaeger.kernel.core.command.base;
 
-import com.njdaeger.kernel.core.command.CommandContext;
-
 @FunctionalInterface
 public interface KernelCommand {
 	

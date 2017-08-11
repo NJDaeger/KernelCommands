@@ -1,13 +1,11 @@
-package com.njdaeger.kernel.core.command;
+package com.njdaeger.kernel.core.command.base;
 
 import com.njdaeger.kernel.core.Kernel;
 import com.njdaeger.kernel.core.Platform;
-import com.njdaeger.kernel.core.command.base.Command;
-import com.njdaeger.kernel.core.command.base.KernelCommand;
-import com.njdaeger.kernel.core.command.base.KernelCompletion;
 import com.njdaeger.kernel.core.server.Sender;
 import com.njdaeger.kernel.core.server.SenderType;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,29 +17,30 @@ public final class CommandInfo {
 	private final String name;
 	private final String desc;
 	private final String usage;
+	private final Method method;
 	private final String[] aliases;
+	private final Object container;
 	private final boolean requiresOp;
 	private final String[] permissions;
+	private CompletionInfo completionInfo;
 	private final SenderType[] senderTypes;
-	private final KernelCommand kernelCommand;
-	private final KernelCompletion kernelCompletion;
 	
-	public CommandInfo(Method method, KernelCommand kernelCommand, KernelCompletion kernelCompletion) {
+	public CommandInfo(Object container, Method method) {
 		Command command;
 		if (!method.isAnnotationPresent(Command.class)) {
-			throw new RuntimeException("Cannot find command annotation at " + method.getName());
+			throw new RuntimeException("Cannot find command annotation on method " + method.getName());
 		} else command = method.getAnnotation(Command.class);
-		this.kernelCompletion = kernelCompletion;
 		this.permissions = command.permissions();
 		this.senderTypes = command.executors();
 		this.requiresOp = command.needsOp();
-		this.kernelCommand = kernelCommand;
 		this.aliases = command.aliases();
 		this.usage = command.usage();
+		this.container = container;
 		this.desc = command.desc();
 		this.name = command.name();
 		this.min = command.min();
 		this.max = command.max();
+		this.method = method;
 		
 	}
 	
@@ -110,6 +109,38 @@ public final class CommandInfo {
 	}
 	
 	/**
+	 * Gets the method this command is contained in
+	 * @return The command method
+	 */
+	public Method getMethod() {
+		return method;
+	}
+	
+	/**
+	 * Gets the tab completion method of this command
+	 * @return The tab completion if it exists. Null otherwise
+	 */
+	public CompletionInfo getCompletionInfo() {
+		return completionInfo;
+	}
+	
+	/**
+	 * Sets the completion info for this command
+	 * @param completionInfo The tab completion info
+	 */
+	public void setCompletionInfo(CompletionInfo completionInfo) {
+		this.completionInfo = completionInfo;
+	}
+	
+	/**
+	 * Gets the commands containing object
+	 * @return The command container
+	 */
+	public Object getContainer() {
+		return container;
+	}
+	
+	/**
 	 * Gets the types of senders allowed to run this command
 	 * @return The sender types
 	 */
@@ -161,16 +192,27 @@ public final class CommandInfo {
 			sender.sendMessage("Not Enough Args");
 			return true;
 		}
-		this.kernelCommand.run(new CommandContext(sender, args));
+		try {
+			this.method.invoke(getContainer(), new CommandContext(sender, args));
+		}
+		catch (IllegalAccessException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 	
 	public List<String> complete(Sender sender, String[] args) {
+		
 		List<String> sub = new ArrayList<>();
 		
-		if (this.kernelCompletion != null) {
+		if (this.completionInfo != null) {
 			TabContext context = new TabContext(new CommandContext(sender, args), this, sender, args);
-			this.kernelCompletion.complete(context);
+			try {
+				this.completionInfo.getMethod().invoke(this.completionInfo.getContainer(), context);
+			}
+			catch (IllegalAccessException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
 			for (String completion : context.currentPossibleCompletion()) {
 				if (completion.toLowerCase().startsWith(context.getCommandContext().argAt(context.getCommandContext().getArgs().size() - 1))) {
 					sub.add(completion);

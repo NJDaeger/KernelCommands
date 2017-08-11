@@ -1,6 +1,6 @@
 package com.njdaeger.kernel.process;
 
-import com.njdaeger.kernel.core.command.CommandContext;
+import com.njdaeger.kernel.core.command.base.CommandContext;
 import com.njdaeger.kernel.core.command.base.Command;
 
 import javax.annotation.processing.AbstractProcessor;

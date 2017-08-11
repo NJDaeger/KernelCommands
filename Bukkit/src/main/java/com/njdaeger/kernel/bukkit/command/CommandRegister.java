@@ -3,7 +3,7 @@ package com.njdaeger.kernel.bukkit.command;
 import com.njdaeger.kernel.bukkit.BukkitKernel;
 import com.njdaeger.kernel.bukkit.BukkitSender;
 import com.njdaeger.kernel.core.IKernel;
-import com.njdaeger.kernel.core.command.CommandInfo;
+import com.njdaeger.kernel.core.command.base.CommandInfo;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;

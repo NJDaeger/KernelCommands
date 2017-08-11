@@ -1,12 +1,7 @@
 package com.njdaeger.kernel.core;
 
-import com.njdaeger.kernel.core.command.base.KernelCommand;
-import com.njdaeger.kernel.core.command.base.KernelCompletion;
-import com.njdaeger.kernel.core.configuration.Format;
-import com.njdaeger.kernel.core.configuration.IConfig;
-import com.njdaeger.kernel.core.configuration.yml.YmlConfig;
+import com.njdaeger.kernel.core.command.base.CommandStore;
 import com.njdaeger.kernel.core.server.Player;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.Collection;
@@ -34,7 +29,6 @@ public final class Kernel {
 			throw new UnsupportedOperationException("The Kernel is already defined.");
 		}
 		Kernel.kernel = kernel;
-		new Cfg();
 	}
 	
 	/**
@@ -72,23 +66,6 @@ public final class Kernel {
 	}
 	
 	/**
-	 * Registers a command without a tab completion
-	 * @param command The command method
-	 */
-	public static void addCommand(String methodName, KernelCommand command) {
-		kernel.addCommand(methodName, command);
-	}
-	
-	/**
-	 * Registers a command with a tab completion
-	 * @param command The command method
-	 * @param completion The tab completion method
-	 */
-	public static void addCommand(String methodName, KernelCommand command, KernelCompletion completion) {
-		kernel.addCommand(methodName, command, completion);
-	}
-	
-	/**
 	 * Gets the server platform
 	 * @return The server platform
 	 */
@@ -102,5 +79,13 @@ public final class Kernel {
 	 */
 	public static File getPluginDirectory() {
 	 	return kernel.getPluginDirectory();
+	}
+	
+	/**
+	 * Gets the plugin command store
+	 * @return The command store
+	 */
+	public static CommandStore getCommandStore() {
+		return kernel.getCommandStore();
 	}
 }
