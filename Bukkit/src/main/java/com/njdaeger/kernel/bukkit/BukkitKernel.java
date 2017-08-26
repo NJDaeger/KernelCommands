@@ -4,8 +4,8 @@ import com.njdaeger.kernel.bukkit.command.BukkitCommandStore;
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
 import com.njdaeger.kernel.core.Platform;
+import com.njdaeger.kernel.core.Register;
 import com.njdaeger.kernel.core.command.base.CommandStore;
-import com.njdaeger.kernel.core.command.commands.TestCommand;
 import com.njdaeger.kernel.core.server.Player;
 import com.njdaeger.kernel.core.server.World;
 import org.apache.commons.lang.Validate;
@@ -27,11 +27,10 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	
 	private static final Map<String, Player> PLAYERS;
 	private static final Map<String, World> WORLDS;
-	private static final CommandStore STORE;
 	private static final File PLUGIN_DIR;
+	private CommandStore commandStore;
 	
 	static {
-		STORE = new BukkitCommandStore(Kernel.getKernel());
 		PLUGIN_DIR = new File("plugins");
 		PLAYERS = new HashMap<>();
 		WORLDS = new HashMap<>();
@@ -40,14 +39,17 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	@Override
 	public void onEnable() {
 		Kernel.setKernel(this);
+		commandStore = new BukkitCommandStore(this);
 		Bukkit.getPluginManager().registerEvents(this, this);
 		Bukkit.getWorlds().forEach(w -> WORLDS.put(w.getName(), new BukkitWorld(w)));
 		Bukkit.getOnlinePlayers().forEach(p -> PLAYERS.put(p.getName(), new BukkitPlayer(p)));
-		getCommandStore().registerClass(new TestCommand());
+		Register.enable();
+		getCommandStore().updateMaps();
 	}
 	
 	@Override
 	public void onDisable() {
+		Register.disable();
 		PLAYERS.clear();
 		WORLDS.clear();
 	}
@@ -101,6 +103,6 @@ public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
 	
 	@Override
 	public CommandStore getCommandStore() {
-		return STORE;
+		return commandStore;
 	}
 }

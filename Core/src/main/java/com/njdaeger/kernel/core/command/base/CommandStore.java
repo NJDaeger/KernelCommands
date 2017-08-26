@@ -41,10 +41,9 @@ public abstract class CommandStore {
 				completionMap.put(info.getCommands(), info);
 			}
 		});
-		updateMaps();
 	}
 	
-	private void updateMaps() {
+	public void updateMaps() {
 		completionMap.forEach((commands, cinfo) -> {
 			for (String command : commands) {
 				if (commandMap.keySet().contains(command)) {
