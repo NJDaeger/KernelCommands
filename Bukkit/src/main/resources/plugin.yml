@@ -2,3 +2,4 @@ name: KernelCommands-Bukkit
 version: 1.0.0
 main: com.njdaeger.kernel.bukkit.BukkitKernel
 author: NJDaeger
+depend: [CoalesceCoreBukkit]

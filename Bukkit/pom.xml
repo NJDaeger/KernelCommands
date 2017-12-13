@@ -32,6 +32,12 @@
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.coalesce</groupId>
+            <artifactId>CoalesceCoreBukkit</artifactId>
+            <version>${coalesceCoreVersion}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

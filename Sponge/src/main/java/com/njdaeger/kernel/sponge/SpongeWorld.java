@@ -1,6 +1,5 @@
 package com.njdaeger.kernel.sponge;
 
-import com.njdaeger.kernel.core.server.Player;
 import org.spongepowered.api.world.World;
 
 import java.util.List;

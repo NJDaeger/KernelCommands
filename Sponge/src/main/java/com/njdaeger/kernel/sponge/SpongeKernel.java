@@ -2,9 +2,7 @@ package com.njdaeger.kernel.sponge;
 
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
-import com.njdaeger.kernel.core.Platform;
 import com.njdaeger.kernel.core.command.base.CommandStore;
-import com.njdaeger.kernel.core.server.Player;
 import com.njdaeger.kernel.core.server.World;
 import com.njdaeger.kernel.sponge.command.SpongeCommandStore;
 import org.apache.commons.lang3.Validate;

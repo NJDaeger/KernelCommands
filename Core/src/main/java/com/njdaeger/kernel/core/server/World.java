@@ -1,5 +1,7 @@
 package com.njdaeger.kernel.core.server;
 
+import com.njdaeger.kernel.core.session.User;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +23,7 @@ public interface World {
 	 * Gets a list of all the players in the world.
 	 * @return All the players in the world
 	 */
-	List<Player> getPlayers();
+	List<User> getUsers();
 	
 	
 	

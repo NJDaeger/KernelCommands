@@ -1,6 +1,6 @@
 package com.njdaeger.kernel.bukkit;
 
-import com.njdaeger.kernel.core.server.Player;
+import com.njdaeger.kernel.core.session.User;
 import org.bukkit.World;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class BukkitWorld implements com.njdaeger.kernel.core.server.World {
 	}
 	
 	@Override
-	public List<Player> getPlayers() {
+	public List<User> getUsers() {
 		return null;
 	}
 }

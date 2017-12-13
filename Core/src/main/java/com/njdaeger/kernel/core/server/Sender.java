@@ -35,10 +35,4 @@ public interface Sender {
 	 */
 	boolean hasPermission(String permission);
 	
-	/**
-	 * Checks if the user is opped or not.
-	 * @return True if the user is opped
-	 */
-	boolean isOp();
-	
 }

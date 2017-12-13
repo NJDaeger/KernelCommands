@@ -1,11 +1,13 @@
 package com.njdaeger.kernel.core;
 
-import com.njdaeger.kernel.core.command.commands.TestCommand;
+import com.njdaeger.kernel.core.modules.homes.HomeCommands;
 
 public class Register {
 	
 	public static void enable() {
-		Kernel.getCommandStore().registerClass(new TestCommand());
+	
+		Kernel.getKernel().getCommandStore().registerCommand(new HomeCommands());
+	
 	}
 	
 	public static void disable() {

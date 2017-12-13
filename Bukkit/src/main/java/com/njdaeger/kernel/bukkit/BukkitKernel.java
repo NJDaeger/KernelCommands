@@ -1,108 +1,123 @@
 package com.njdaeger.kernel.bukkit;
 
-import com.njdaeger.kernel.bukkit.command.BukkitCommandStore;
+import com.coalesce.core.bukkit.CoPlugin;
+import com.coalesce.core.session.NamespacedSessionStore;
 import com.njdaeger.kernel.core.IKernel;
 import com.njdaeger.kernel.core.Kernel;
-import com.njdaeger.kernel.core.Platform;
 import com.njdaeger.kernel.core.Register;
-import com.njdaeger.kernel.core.command.base.CommandStore;
-import com.njdaeger.kernel.core.server.Player;
+import com.njdaeger.kernel.core.configuration.UserDatabase;
 import com.njdaeger.kernel.core.server.World;
+import com.njdaeger.kernel.core.session.OfflineUser;
+import com.njdaeger.kernel.core.session.User;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class BukkitKernel extends JavaPlugin implements IKernel, Listener {
+public class BukkitKernel extends CoPlugin implements IKernel, Listener {
 	
-	private static final Map<String, Player> PLAYERS;
+	private NamespacedSessionStore<BukkitUser> userNamespace;
 	private static final Map<String, World> WORLDS;
-	private static final File PLUGIN_DIR;
-	private CommandStore commandStore;
+	private UserDatabase userdata;
 	
 	static {
-		PLUGIN_DIR = new File("plugins");
-		PLAYERS = new HashMap<>();
 		WORLDS = new HashMap<>();
+		
 	}
 	
 	@Override
-	public void onEnable() {
+	public void onPluginEnable() throws Exception {
+		//Set the kernel
 		Kernel.setKernel(this);
-		commandStore = new BukkitCommandStore(this);
-		Bukkit.getPluginManager().registerEvents(this, this);
+		
+		//Registers the listeners in this class
+		registerListener(this);
+		
+		//Userdata.
+		userdata = new UserDatabase();
+		
+		//Creates instances of wrapped worlds
 		Bukkit.getWorlds().forEach(w -> WORLDS.put(w.getName(), new BukkitWorld(w)));
-		Bukkit.getOnlinePlayers().forEach(p -> PLAYERS.put(p.getName(), new BukkitPlayer(p)));
+		
+		//Creates the userNamespace and adds users to the namespace.
+		userNamespace = getSessionStore().addNamespace("users", BukkitUser.class);
+		Bukkit.getOnlinePlayers().forEach(p -> {
+			User user = userNamespace.addSession(new BukkitUser(p.getName(), p));
+			user.login();
+			getUserDatabase().addUser(user);
+		});
+		
+		//Runs the common portion of the onEnable.
 		Register.enable();
-		getCommandStore().updateMaps();
 	}
 	
 	@Override
-	public void onDisable() {
+	public void onPluginDisable() throws Exception {
 		Register.disable();
-		PLAYERS.clear();
+		
+		userNamespace.getSessions().forEach(s -> {
+			s.logout();
+			userNamespace.removeSession(s.getName());
+		});
+		
 		WORLDS.clear();
 	}
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		PLAYERS.put(e.getPlayer().getName(), new BukkitPlayer(e.getPlayer()));
+		User user = userNamespace.addSession(new BukkitUser(e.getPlayer().getName(), e.getPlayer()));
+		user.login();
+		getUserDatabase().addUser(user);
 	}
 	
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
-		PLAYERS.remove(e.getPlayer().getName());
+		User user = userNamespace.getSession(e.getPlayer().getName());
+		user.logout();
+		userNamespace.removeSession(user.getName());
 	}
 	
 	@Override
-	public Collection<Player> getPlayers() {
-		return PLAYERS.values();
+	public Collection<User> getUsers() {
+		return new ArrayList<>(userNamespace.getSessions());
 	}
 	
 	@Override
-	public Player getPlayer(String name) {
+	public User getUser(String name) {
 		Validate.notNull(name, "Player name cannot be null");
-		return PLAYERS.get(name);
+		return userNamespace.getSession(name);
 	}
 	
 	@Override
-	public Player getPlayer(UUID userID) {
-		Validate.notNull(userID, "Player UUID cannot be null");
-		return null;
+	public OfflineUser getOfflineUser(String name) {
+		Validate.notNull(name, "Player name cannot be null");
+		if (!userdata.contains(name, true) || userdata.getEntry(name).getValue() == null) return null;
+		else return new BukkitOfflineUser(name, UUID.fromString(userdata.getValue(name).toString()));
 	}
 	
 	@Override
-	public String getVersion() {
-		return getDescription().getVersion();
+	public Collection<World> getWorlds() {
+		return WORLDS.values();
 	}
 	
 	@Override
-	public String getAuthors() {
-		return Arrays.toString(getDescription().getAuthors().toArray());
+	public World getWorld(String name) {
+		Validate.notNull(name, "World name cannot be null");
+		return WORLDS.get(name);
 	}
 	
 	@Override
-	public Platform getPlatform() {
-		return Platform.BUKKIT;
-	}
-	
-	@Override
-	public File getPluginDirectory() {
-		return PLUGIN_DIR;
-	}
-	
-	@Override
-	public CommandStore getCommandStore() {
-		return commandStore;
+	public UserDatabase getUserDatabase() {
+		return userdata;
 	}
 }
