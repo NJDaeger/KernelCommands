@@ -6,11 +6,13 @@ import com.njdaeger.kernel.core.server.Location;
 import com.njdaeger.kernel.core.session.OfflineUser;
 
 public interface IOfflineHome extends Locatable, Relocatable {
-	
-	String getName();
-	
-	Location getLocation();
-	
-	OfflineUser getOwner();
-	
+    
+    String getName();
+    
+    Location getLocation();
+    
+    OfflineUser getOwner();
+    
+    boolean delete();
+    
 }
