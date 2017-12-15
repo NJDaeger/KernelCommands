@@ -6,7 +6,12 @@ public enum UserPaths {
     NICKNAME("nickname", null),
     ID("uuid", null),
     IP("ip", null),
-    CURRENT_WORLD("world", null);
+    CURRENT_X("current.x", null),
+    CURRENT_Y("current.y", null),
+    CURRENT_Z("current.z", null),
+    CURRENT_YAW("current.yaw", null),
+    CURRENT_PITCH("current.pitch", null),
+    CURRENT_WORLD("current.world", null);
     
     private String path;
     private Object defVal;

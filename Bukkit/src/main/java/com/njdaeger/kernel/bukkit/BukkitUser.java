@@ -6,6 +6,7 @@ import com.njdaeger.kernel.core.UserPaths;
 import com.njdaeger.kernel.core.configuration.UserFile;
 import com.njdaeger.kernel.core.configuration.homes.Home;
 import com.njdaeger.kernel.core.configuration.homes.IHome;
+import com.njdaeger.kernel.core.configuration.homes.IOfflineHome;
 import com.njdaeger.kernel.core.server.Location;
 import com.njdaeger.kernel.core.session.User;
 import org.bukkit.Bukkit;
@@ -43,6 +44,11 @@ public class BukkitUser extends AbstractSession<Player> implements User {
         userPaths.putIfAbsent(UserPaths.NICKNAME, player.getDisplayName());
         userPaths.putIfAbsent(UserPaths.PLAYERNAME, player.getName());
         userPaths.putIfAbsent(UserPaths.CURRENT_WORLD, player.getWorld().getName());
+        userPaths.putIfAbsent(UserPaths.CURRENT_PITCH, player.getLocation().getPitch());
+        userPaths.putIfAbsent(UserPaths.CURRENT_YAW, player.getLocation().getYaw());
+        userPaths.putIfAbsent(UserPaths.CURRENT_X, player.getLocation().getX());
+        userPaths.putIfAbsent(UserPaths.CURRENT_Y, player.getLocation().getY());
+        userPaths.putIfAbsent(UserPaths.CURRENT_Z, player.getLocation().getZ());
         userPaths.putIfAbsent(UserPaths.ID, player.getUniqueId().toString());
         userPaths.putIfAbsent(UserPaths.IP, player.getAddress().getAddress().toString());
         
@@ -91,6 +97,17 @@ public class BukkitUser extends AbstractSession<Player> implements User {
     public void addHome(Location location, String name) {
         IHome home = new Home(this, location, name);
         homes.put(name, home);
+    }
+    
+    @Override
+    public void removeHome(String name) {
+        homes.remove(name).delete();
+    }
+    
+    @Override
+    public void removeHome(IOfflineHome home) {
+        homes.remove(home.getName());
+        home.delete();
     }
     
     @Override

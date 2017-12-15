@@ -32,6 +32,20 @@ public interface OfflineUser {
     void addHome(Location location, String name);
     
     /**
+     * Safely removes a home from the user.
+     *
+     * @param name The home to remove.
+     */
+    void removeHome(String name);
+    
+    /**
+     * Safely removes a home from the user.
+     *
+     * @param home The home to remove.
+     */
+    void removeHome(IOfflineHome home);
+    
+    /**
      * Gets a list of this users homes
      *
      * @return The homes if they have any

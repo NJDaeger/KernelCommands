@@ -1,14 +1,11 @@
 package com.njdaeger.kernel.core;
 
-import com.coalesce.core.SenderType;
 import com.coalesce.core.command.base.CommandContext;
 import com.coalesce.core.wrappers.CoSender;
-import com.njdaeger.kernel.core.server.Sender;
 import com.njdaeger.kernel.core.server.World;
 import com.njdaeger.kernel.core.session.OfflineUser;
 import com.njdaeger.kernel.core.session.User;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -44,15 +41,6 @@ public final class Kernel {
      */
     public static Logger getLogger() {
         return kernel.getLogger();
-    }
-    
-    /**
-     * Gets the folder holding the mods/plugins
-     *
-     * @return The plugins directory
-     */
-    public static File getPluginDirectory() {
-        return kernel.getPluginDirectory();
     }
     
     /**

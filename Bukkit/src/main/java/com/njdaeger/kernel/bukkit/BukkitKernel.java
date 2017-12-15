@@ -1,5 +1,6 @@
 package com.njdaeger.kernel.bukkit;
 
+import com.coalesce.core.Color;
 import com.coalesce.core.bukkit.CoPlugin;
 import com.coalesce.core.session.NamespacedSessionStore;
 import com.njdaeger.kernel.core.IKernel;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 public class BukkitKernel extends CoPlugin implements IKernel, Listener {
     
+    private NamespacedSessionStore<BukkitOfflineUser> offlineNamespace;
     private NamespacedSessionStore<BukkitUser> userNamespace;
     private static final Map<String, World> WORLDS;
     private UserDatabase userdata;
@@ -37,6 +39,7 @@ public class BukkitKernel extends CoPlugin implements IKernel, Listener {
     
     @Override
     public void onPluginEnable() throws Exception {
+        setPluginColor(Color.SILVER);
         //Set the kernel
         Kernel.setKernel(this);
         
@@ -50,6 +53,7 @@ public class BukkitKernel extends CoPlugin implements IKernel, Listener {
         Bukkit.getWorlds().forEach(w -> WORLDS.put(w.getName(), new BukkitWorld(w)));
         
         //Creates the userNamespace and adds users to the namespace.
+        offlineNamespace = getSessionStore().addNamespace("offline", BukkitOfflineUser.class);
         userNamespace = getSessionStore().addNamespace("users", BukkitUser.class);
         Bukkit.getOnlinePlayers().forEach(p -> {
             User user = userNamespace.addSession(new BukkitUser(p.getName(), p));
@@ -75,6 +79,7 @@ public class BukkitKernel extends CoPlugin implements IKernel, Listener {
     
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        if (offlineNamespace.getSession(e.getPlayer().getName()) != null) offlineNamespace.removeSession(e.getPlayer().getName());
         User user = userNamespace.addSession(new BukkitUser(e.getPlayer().getName(), e.getPlayer()));
         user.login();
         getUserDatabase().addUser(user);
@@ -103,9 +108,9 @@ public class BukkitKernel extends CoPlugin implements IKernel, Listener {
         Validate.notNull(name, "Player name cannot be null");
         if (!userdata.contains(name, true) || userdata.getEntry(name).getValue() == null) {
             return null;
-        } else {
-            return new BukkitOfflineUser(name, UUID.fromString(userdata.getValue(name).toString()));
-        }
+        } else if (offlineNamespace.getSession(name) != null) {
+            return offlineNamespace.getSession(name);
+        } else return new BukkitOfflineUser(name, UUID.fromString(userdata.getValue(name).toString()));
     }
     
     @Override
