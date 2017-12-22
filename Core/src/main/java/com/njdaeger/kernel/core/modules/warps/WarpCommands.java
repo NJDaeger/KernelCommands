@@ -7,7 +7,7 @@ import com.coalesce.core.command.base.CommandContext;
 
 import static com.njdaeger.kernel.core.Permission.KERNEL_AFK;
 
-public class WarpCommands {
+public final class WarpCommands {
     
     @Permission( KERNEL_AFK )
     @Command( name = "warp",
@@ -33,5 +33,12 @@ public class WarpCommands {
         }
         
     }
+    
+    /*
+    Look for all the methods with a subcommand annotation on them
+    
+    
+    
+     */
     
 }

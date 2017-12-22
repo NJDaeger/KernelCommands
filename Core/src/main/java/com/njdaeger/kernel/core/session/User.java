@@ -38,7 +38,7 @@ public interface User extends OfflineUser {
      * @param message The message to send.
      */
     default void pluginMessage(String message) {
-        Kernel.getKernel().getCoFormatter().format(message);
+        sendMessage(Kernel.getKernel().getCoFormatter().format(message));
     }
     
     /**
@@ -48,7 +48,7 @@ public interface User extends OfflineUser {
      * @param replacements The replacements
      */
     default void pluginMessage(String message, Object... replacements) {
-        Kernel.getKernel().getCoFormatter().format(message, replacements);
+        sendMessage(Kernel.getKernel().getCoFormatter().format(message, replacements));
     }
     
     /**

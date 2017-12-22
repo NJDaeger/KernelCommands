@@ -5,11 +5,11 @@ import com.coalesce.core.command.base.CommandContext;
 import com.coalesce.core.plugin.ICoPlugin;
 import com.coalesce.core.wrappers.CoSender;
 import com.njdaeger.kernel.core.configuration.UserDatabase;
+import com.njdaeger.kernel.core.configuration.warps.IWarp;
 import com.njdaeger.kernel.core.server.World;
 import com.njdaeger.kernel.core.session.OfflineUser;
 import com.njdaeger.kernel.core.session.User;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -77,6 +77,34 @@ public interface IKernel extends ICoPlugin {
     OfflineUser getOfflineUser(String name);
     
     /**
+     * Get the user database. (Stores pairs of users and their uuid)
+     *
+     * @return The user database.
+     */
+    UserDatabase getUserDatabase();
+    
+    /**
+     * Gets all the warps on the entire server
+     * @return The server warps
+     */
+    Collection<IWarp> getWarps();
+    
+    /**
+     * Gets a warp via name
+     * @param name The name of the warp.
+     * @return The first warp found regardless of the world its in, or if there are duplicates.
+     */
+    IWarp getWarp(String name);
+    
+    /**
+     * Gets a warp by name and world
+     * @param name The name of the warp
+     * @param world The name of the world to get the warp from
+     * @return The warp. If more warps exist with the same name but on different worlds,
+     */
+    IWarp getWarp(World world, String name);
+    
+    /**
      * Gets the Kernel's Logger
      *
      * @return The Kernels logger
@@ -84,12 +112,5 @@ public interface IKernel extends ICoPlugin {
     default Logger getLogger() {
         return Logger.getLogger("KernelCommands");
     }
-    
-    /**
-     * Get the user database. (Stores pairs of users and their uuid)
-     *
-     * @return The user database.
-     */
-    UserDatabase getUserDatabase();
     
 }

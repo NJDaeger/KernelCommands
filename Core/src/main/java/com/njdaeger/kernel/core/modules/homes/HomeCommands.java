@@ -22,7 +22,7 @@ import static com.coalesce.core.Color.SILVER;
 import static com.njdaeger.kernel.core.Messages.*;
 import static com.njdaeger.kernel.core.Permission.*;
 
-@SuppressWarnings( "unused" )
+@SuppressWarnings( {"unused", "e"})
 public final class HomeCommands {
     
     /*
@@ -36,7 +36,7 @@ public final class HomeCommands {
     - Add tab completions for homes, and delhome.
     
      */
-    //@SuppressWarnings("all")
+    @SuppressWarnings("all")
     @Permission( KERNEL_HOME )
     @Sender( SenderType.PLAYER )
     @Alias( {"gohome", "tphome"} )
@@ -162,6 +162,7 @@ public final class HomeCommands {
     }
     
     @Completion( "home" )
+    @SuppressWarnings("all")
     public void homeTab(TabContext context) {
         Set<String> completions = new HashSet<>();
         if (context.getLength() == 0) {
@@ -401,10 +402,10 @@ public final class HomeCommands {
             
             if (user.getHome(firstArg) == null) {
                 user.addHome(firstArg);
-                user.pluginMessage(HOME_CREATED.toString(), firstArg, user.getName());
+                context.pluginMessage(HOME_CREATED.toString(), firstArg, user.getName());
                 return;
             }
-            user.pluginMessage(HOME_EXISTS.toString(), firstArg);
+            context.pluginMessage(HOME_EXISTS.toString(), firstArg);
             return;
         }
         

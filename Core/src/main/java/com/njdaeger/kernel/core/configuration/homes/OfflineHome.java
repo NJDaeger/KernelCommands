@@ -20,12 +20,12 @@ public class OfflineHome extends YmlConfig implements IOfflineHome {
         this.name = name;
         
         Location loc = location == null ? user.getLocation() : location;
-        setX(loc.getX());
-        setY(loc.getY());
-        setZ(loc.getZ());
-        setYaw(loc.getYaw());
-        setPitch(loc.getPitch());
-        setWorld(loc.getWorld());
+        addEntry("x", loc.getX());
+        addEntry("y", loc.getY());
+        addEntry("z", loc.getZ());
+        addEntry("yaw", loc.getYaw());
+        addEntry("pitch", loc.getPitch());
+        addEntry("world", loc.getWorld().getName());
         
     }
     
